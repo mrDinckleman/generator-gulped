@@ -1,13 +1,13 @@
-# generator-gulped [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
-> Yeoman generator for Gulped template
+# generator-gulped [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+> Yeoman generator for [Gulped](https://github.com/mrDinckleman/gulped) template
 
 ## Installation
 
-First, install [Yeoman](http://yeoman.io) and generator-gulped using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+First, install [Yeoman](http://yeoman.io) and [generator-gulped](https://github.com/mrDinckleman/generator-gulped) using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
 ```bash
 npm install -g yo
-npm install -g generator-gulped
+npm install -g mrDinckleman/generator-gulped
 ```
 
 Then generate your new project:
@@ -28,8 +28,6 @@ yo gulped
 MIT © [Sergey Kovalchuk](https://github.com/mrDinckleman)
 
 
-[npm-image]: https://badge.fury.io/js/generator-gulped.svg
-[npm-url]: https://npmjs.org/package/generator-gulped
 [travis-image]: https://travis-ci.org/mrDinckleman/generator-gulped.svg?branch=master
 [travis-url]: https://travis-ci.org/mrDinckleman/generator-gulped
 [daviddm-image]: https://david-dm.org/mrDinckleman/generator-gulped.svg?theme=shields.io
