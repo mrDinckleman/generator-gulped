@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Sergey Kovalchuk",
+      "authorEmail": "admin@vitam.in.ua",
+      "authorUrl": "https://github.com/mrDinckleman"
+    }
+  }
+}
