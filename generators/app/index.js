@@ -1,27 +1,71 @@
 'use strict';
 const Generator = require('yeoman-generator');
-const chalk = require('chalk');
-const yosay = require('yosay');
 
 module.exports = class extends Generator {
+  constructor(args, opts) {
+    super(args, opts);
+
+    this.description = 'Yeoman generator for Gulped template';
+
+    this.argument('name', {
+      desc: 'Project name',
+      required: false,
+      type: String
+    });
+
+    this.option('yes', {
+      desc: 'Use default parameters',
+      alias: 'y',
+      type: Boolean
+    });
+  }
+
   prompting() {
-    // Have Yeoman greet the user.
-    this.log(
-      yosay(`Welcome to the cat's meow ${chalk.red('generator-gulped')} generator!`)
-    );
+    // Hacky method https://github.com/yeoman/generator/issues/917
+    let globalPrompt = this._globalConfig.get('promptValues');
+    const defaults = {
+      name: this.appname,
+      version: '0.1.0'
+    };
 
     const prompts = [
       {
-        type: 'confirm',
-        name: 'someAnswer',
-        message: 'Would you like to enable this option?',
-        default: true
+        type: 'input',
+        name: 'name',
+        message: 'Project name',
+        default: defaults.name,
+        when: !this.options.name && !this.options.yes
+      },
+      {
+        type: 'input',
+        name: 'version',
+        message: 'Version',
+        default: defaults.version,
+        when: !this.options.yes
+      },
+      {
+        type: 'input',
+        name: 'author',
+        message: 'Author',
+        validate: input => Boolean(input),
+        store: true,
+        when: !(this.options.yes && globalPrompt && globalPrompt.author)
+      },
+      {
+        type: 'input',
+        name: 'homepage',
+        message: 'Homepage',
+        when: !this.options.yes
       }
     ];
 
     return this.prompt(prompts).then(props => {
-      // To access props later use this.props.someAnswer;
-      this.props = props;
+      this.props = {
+        name: props.name || this.options.name || defaults.name,
+        version: props.version || defaults.version,
+        author: props.author || globalPrompt.author,
+        homepage: props.homepage || ''
+      };
     });
   }
 
