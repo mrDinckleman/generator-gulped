@@ -1,5 +1,6 @@
 'use strict';
 const Generator = require('yeoman-generator');
+const utils = require('../../lib/utils');
 
 module.exports = class extends Generator {
   constructor(args, opts) {
@@ -47,7 +48,7 @@ module.exports = class extends Generator {
         type: 'input',
         name: 'author',
         message: 'Author',
-        validate: input => Boolean(input),
+        validate: utils.required,
         store: true,
         when: !(this.options.yes && globalPrompt.author)
       },
