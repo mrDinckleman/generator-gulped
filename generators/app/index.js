@@ -1,6 +1,7 @@
 'use strict';
 const Generator = require('yeoman-generator');
 const utils = require('../../lib/utils');
+const path = require('path');
 
 module.exports = class extends Generator {
   constructor(args, opts) {
@@ -64,20 +65,42 @@ module.exports = class extends Generator {
       this.props = {
         name: props.name || this.options.name || defaults.name,
         version: props.version || defaults.version,
-        author: props.author || globalPrompt.author,
+        author: props.author || globalPrompt.author || '',
         homepage: props.homepage || ''
       };
     });
   }
 
   writing() {
+    this.sourceRoot(path.join(path.dirname(this.resolved), '../../node_modules/gulped/'));
+
     this.fs.copy(
-      this.templatePath('dummyfile.txt'),
-      this.destinationPath('dummyfile.txt')
+      this.templatePath('**/!(.npmignore|package.json)'),
+      this.destinationPath('./'),
+      {
+        globOptions: { dot: true }
+      }
     );
+    // NPM renames '.gitignore' file to '.npmignore' during installation,
+    // so we need to rename it back
+    this.fs.copy(this.templatePath('.npmignore'), this.destinationPath('.gitignore'));
+
+    // Save project information entered by user
+    let templateJson = this.fs.readJSON(this.templatePath('package.json'));
+    let packageJson = {
+      name: this.props.name,
+      version: this.props.version,
+      description: templateJson.description,
+      scripts: templateJson.scripts,
+      homepage: this.props.homepage,
+      author: this.props.author,
+      devDependencies: templateJson.devDependencies,
+      private: true
+    };
+    this.fs.writeJSON(this.destinationPath('package.json'), packageJson);
   }
 
   install() {
-    this.installDependencies();
+    this.npmInstall();
   }
 };
