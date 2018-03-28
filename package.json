@@ -1,6 +1,6 @@
 {
   "name": "generator-gulped",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Yeoman generator for Gulped template",
   "homepage": "https://github.com/mrDinckleman/generator-gulped",
   "author": {
@@ -36,7 +36,7 @@
     "prepublish": "nsp check",
     "pretest": "eslint .",
     "precommit": "lint-staged",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "lint-staged": {
     "*.js": ["eslint --fix", "git add"],

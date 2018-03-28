@@ -22,7 +22,7 @@ module.exports = class extends Generator {
 
   prompting() {
     // Hacky method https://github.com/yeoman/generator/issues/917
-    let globalPrompt = this._globalConfig.get('promptValues');
+    let globalPrompt = this._globalConfig.get('promptValues') || {};
     const defaults = {
       name: this.appname,
       version: '0.1.0'
@@ -49,7 +49,7 @@ module.exports = class extends Generator {
         message: 'Author',
         validate: input => Boolean(input),
         store: true,
-        when: !(this.options.yes && globalPrompt && globalPrompt.author)
+        when: !(this.options.yes && globalPrompt.author)
       },
       {
         type: 'input',
