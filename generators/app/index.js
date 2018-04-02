@@ -24,11 +24,15 @@ module.exports = class extends Generator {
 
   prompting() {
     // Hacky method https://github.com/yeoman/generator/issues/917
-    let globalPrompt = this._globalConfig.get('promptValues') || {};
+    let authors = this._globalConfig.get('authors') || {
+      choices: [],
+      last: ''
+    };
     const defaults = {
       name: this.appname,
       version: '0.1.0'
     };
+    const ADD_AUTHOR = 'Add new';
 
     const prompts = [
       {
@@ -46,12 +50,33 @@ module.exports = class extends Generator {
         when: !this.options.yes
       },
       {
-        type: 'input',
+        type: 'list',
         name: 'author',
         message: 'Author',
+        choices: authors.choices.concat({ type: 'separator' }, ADD_AUTHOR),
+        default: authors.last,
+        when: () => {
+          if (!authors.choices.length) {
+            return false;
+          }
+          return !this.options.yes;
+        }
+      },
+      {
+        type: 'input',
+        name: 'author',
+        message: answers => (answers.author === ADD_AUTHOR ? 'New author' : 'Author'),
+        default: authors.last ? authors.last : undefined,
         validate: utils.required,
-        store: true,
-        when: !(this.options.yes && globalPrompt.author)
+        when: answers => {
+          if (authors.last) {
+            if (this.options.yes) {
+              return false;
+            }
+            return answers.author === ADD_AUTHOR;
+          }
+          return true;
+        }
       },
       {
         type: 'input',
@@ -62,10 +87,18 @@ module.exports = class extends Generator {
     ];
 
     return this.prompt(prompts).then(props => {
+      if (props.author) {
+        if (authors.choices.indexOf(props.author) === -1) {
+          authors.choices.push(props.author);
+        }
+        authors.last = props.author;
+        this._globalConfig.set('authors', authors);
+      }
+
       this.props = {
         name: props.name || this.options.name || defaults.name,
         version: props.version || defaults.version,
-        author: props.author || globalPrompt.author || '',
+        author: props.author || authors.last || '',
         homepage: props.homepage || ''
       };
     });

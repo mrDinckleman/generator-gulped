@@ -1,6 +1,6 @@
 {
   "name": "generator-gulped",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Yeoman generator for Gulped template",
   "homepage": "https://github.com/mrDinckleman/generator-gulped",
   "author": {
