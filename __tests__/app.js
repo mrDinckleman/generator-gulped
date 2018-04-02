@@ -6,17 +6,17 @@ const helpers = require('yeoman-test');
 const generator = path.join(__dirname, '../generators/app');
 
 describe('generator-gulped:app', () => {
-  let prevGlobal;
+  let _authors;
 
   beforeAll(() => {
     return helpers.run(generator).on('ready', gen => {
-      prevGlobal = gen._globalConfig.get('promptValues');
-      gen._globalConfig.delete('promptValues');
+      _authors = gen._globalConfig.get('authors');
+      gen._globalConfig.delete('authors');
     });
   });
   afterAll(() => {
     return helpers.run(generator).on('ready', gen => {
-      gen._globalConfig.set('promptValues', prevGlobal);
+      gen._globalConfig.set('authors', _authors);
     });
   });
   describe('creating files', () => {
@@ -132,7 +132,7 @@ describe('generator-gulped:app', () => {
 
     beforeAll(() => {
       return helpers.run(generator).on('ready', gen => {
-        gen._globalConfig.set('promptValues', { author });
+        gen._globalConfig.set('authors', { choices: [author], last: author });
       });
     });
     it('set global value by default', () => {
@@ -140,7 +140,7 @@ describe('generator-gulped:app', () => {
     });
     afterAll(() => {
       return helpers.run(generator).on('ready', gen => {
-        gen._globalConfig.delete('promptValues');
+        gen._globalConfig.delete('authors');
       });
     });
   });
