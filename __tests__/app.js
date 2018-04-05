@@ -3,24 +3,33 @@ const path = require('path');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 
-const generator = path.join(__dirname, '../generators/app');
+const app = path.join(__dirname, '../generators/app');
 
 describe('generator-gulped:app', () => {
-  let _authors;
+  let storage;
 
   beforeAll(() => {
-    return helpers.run(generator).on('ready', gen => {
-      _authors = gen._globalConfig.get('authors');
-      gen._globalConfig.delete('authors');
+    return helpers.run(app).on('ready', gen => {
+      storage = (() => {
+        const config = gen._globalConfig;
+        const source = config.get('authors');
+
+        return {
+          get: () => config.get('authors'),
+          set: value => config.set('authors', value),
+          clear: () => config.delete('authors'),
+          restore: () => config.set('authors', source)
+        };
+      })();
+
+      storage.clear();
     });
   });
-  afterAll(() => {
-    return helpers.run(generator).on('ready', gen => {
-      gen._globalConfig.set('authors', _authors);
-    });
-  });
+  afterAll(() => storage.restore());
+
   describe('creating files', () => {
-    beforeAll(() => helpers.run(generator));
+    beforeAll(() => helpers.run(app));
+
     it('create fonts dir', () => {
       assert.file(['app/fonts']);
     });
@@ -60,58 +69,96 @@ describe('generator-gulped:app', () => {
       ]);
     });
   });
-  describe('using defaults', () => {
+  describe('using defaults with no authors', () => {
     let name;
 
-    beforeAll(() => {
-      return helpers.run(generator).inTmpDir(dir => {
-        name = path.basename(dir);
-      });
-    });
     it('set default values', () => {
-      assert.jsonFileContent('package.json', {
-        name: name,
-        version: '0.1.0',
-        author: '',
-        homepage: ''
-      });
-    });
-  });
-  describe('using --yes flag', () => {
-    let name;
-
-    beforeAll(() => {
       return helpers
-        .run(generator)
+        .run(app)
         .inTmpDir(dir => {
           name = path.basename(dir);
         })
-        .withOptions({ yes: true });
+        .then(() => {
+          assert.jsonFileContent('package.json', {
+            name: name,
+            version: '0.1.0',
+            author: '',
+            homepage: ''
+          });
+        });
     });
+  });
+  describe('using --yes flag with no authors', () => {
+    let name;
+
     it('set default values', () => {
-      assert.jsonFileContent('package.json', {
-        name: name,
-        version: '0.1.0',
-        author: '',
-        homepage: ''
+      return helpers
+        .run(app)
+        .inTmpDir(dir => {
+          name = path.basename(dir);
+        })
+        .withOptions({ yes: true })
+        .then(() => {
+          assert.jsonFileContent('package.json', {
+            name: name,
+            version: '0.1.0',
+            author: '',
+            homepage: ''
+          });
+        });
+    });
+    it('set name from argument', () => {
+      let name = 'project';
+
+      return helpers
+        .run(app)
+        .withArguments([name])
+        .withOptions({ yes: true })
+        .then(() => {
+          assert.jsonFileContent('package.json', {
+            name: name,
+            version: '0.1.0',
+            author: '',
+            homepage: ''
+          });
+        });
+    });
+  });
+  describe('using last author', () => {
+    let author = 'Foo Bar';
+
+    beforeAll(() => storage.set({ choices: [author, 'Baz Qux'], last: author }));
+    afterAll(() => storage.clear());
+    it('set last author by default', () => {
+      return helpers.run(app).then(() => {
+        assert.jsonFileContent('package.json', { author });
       });
+    });
+    it('set last author with --yes flag', () => {
+      return helpers
+        .run(app)
+        .withOptions({ yes: true })
+        .then(() => {
+          assert.jsonFileContent('package.json', { author });
+        });
     });
   });
   describe('using name argument', () => {
-    let name = 'foo-bar';
-    let prompt = 'bar-foo';
+    let argName = 'argument';
+    let promptName = 'prompt';
 
     beforeAll(() => {
       return helpers
-        .run(generator)
-        .withArguments([name])
-        .withPrompts({ name: prompt });
+        .run(app)
+        .withArguments([argName])
+        .withPrompts({ name: promptName });
     });
+
     it('set name specified in argument', () => {
-      assert.jsonFileContent('package.json', { name: name });
+      assert.jsonFileContent('package.json', { name: argName });
     });
     it('ignore name specified in prompt', () => {
-      assert.noJsonFileContent('package.json', { name: prompt });
+      assert.noJsonFileContent('package.json', { name: promptName });
     });
   });
   describe('using entered values', () => {
@@ -122,26 +169,13 @@ describe('generator-gulped:app', () => {
       homepage: 'http://project.org'
     };
 
-    beforeAll(() => helpers.run(generator).withPrompts(prompts));
     it('set specified values', () => {
-      assert.jsonFileContent('package.json', prompts);
-    });
-  });
-  describe('using global author value', () => {
-    let author = 'Author <email@gmail.com>';
-
-    beforeAll(() => {
-      return helpers.run(generator).on('ready', gen => {
-        gen._globalConfig.set('authors', { choices: [author], last: author });
-      });
-    });
-    it('set global value by default', () => {
-      assert.jsonFileContent('package.json', { author });
-    });
-    afterAll(() => {
-      return helpers.run(generator).on('ready', gen => {
-        gen._globalConfig.delete('authors');
-      });
+      return helpers
+        .run(app)
+        .withPrompts(prompts)
+        .then(() => {
+          assert.jsonFileContent('package.json', prompts);
+        });
     });
   });
 });
