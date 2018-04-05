@@ -65,7 +65,7 @@ module.exports = class extends Generator {
       {
         type: 'input',
         name: 'author',
-        message: answers => (answers.author === ADD_AUTHOR ? 'New author' : 'Author'),
+        message: answers => utils.newAuthorMessage(answers.author === ADD_AUTHOR),
         default: authors.last ? authors.last : undefined,
         validate: utils.required,
         when: answers => {

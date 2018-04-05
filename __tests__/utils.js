@@ -9,4 +9,10 @@ describe('utils', () => {
       assert.ok(utils.required('foo bar'), 'non-empty string should return true');
     });
   });
+  describe('.newAuthorMessage()', () => {
+    it('return string', () => {
+      assert.equal(utils.newAuthorMessage(true), 'New author');
+      assert.equal(utils.newAuthorMessage(false), 'Author');
+    });
+  });
 });
