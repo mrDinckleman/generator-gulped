@@ -37,7 +37,7 @@ describe('generator-gulped:app', () => {
       assert.file(['app/images']);
     });
     it('create scripts dir', () => {
-      assert.file(['app/scripts/app.js', 'app/scripts/imports.json']);
+      assert.file(['app/scripts/app.js']);
     });
     it('create static dir', () => {
       assert.file(['app/static']);
