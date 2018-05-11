@@ -1,6 +1,6 @@
 {
   "name": "generator-gulped",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Yeoman generator for Gulped template",
   "homepage": "https://github.com/mrDinckleman/generator-gulped",
   "author": {
@@ -21,13 +21,13 @@
     "jest": "^22.0.6",
     "lint-staged": "^4.2.1",
     "nsp": "^2.6.3",
-    "prettier": "^1.12.0",
+    "prettier": "^1.12.1",
     "yeoman-assert": "^3.1.1",
-    "yeoman-test": "^1.7.0"
+    "yeoman-test": "^1.7.1"
   },
   "dependencies": {
     "gulped": "github:mrDinckleman/gulped",
-    "yeoman-generator": "^2.0.4"
+    "yeoman-generator": "^2.0.5"
   },
   "jest": {
     "testEnvironment": "node"
