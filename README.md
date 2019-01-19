@@ -16,6 +16,8 @@ Then generate your new project:
 yo gulped
 ```
 
+If you want to skip install dependencies, just run this command with `--skip-install` flag.
+
 In project directory run `yo gulped:page` to create new view file.
 
 ## Getting To Know Yeoman
