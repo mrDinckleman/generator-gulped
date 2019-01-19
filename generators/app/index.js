@@ -132,6 +132,7 @@ module.exports = class extends Generator {
       homepage: this.props.homepage,
       author: this.props.author,
       devDependencies: templateJson.devDependencies,
+      dependencies: templateJson.dependencies,
       private: true
     };
     this.fs.writeJSON(this.destinationPath('package.json'), packageJson);
