@@ -16,6 +16,8 @@ Then generate your new project:
 yo gulped
 ```
 
+In project directory run `yo gulped:page` to create new view file.
+
 ## Getting To Know Yeoman
 
  * Yeoman has a heart of gold.

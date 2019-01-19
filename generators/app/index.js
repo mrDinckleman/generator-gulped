@@ -59,6 +59,7 @@ module.exports = class extends Generator {
           if (!authors.choices.length) {
             return false;
           }
+
           return !this.options.yes;
         }
       },
@@ -73,8 +74,10 @@ module.exports = class extends Generator {
             if (this.options.yes) {
               return false;
             }
+
             return answers.author === ADD_AUTHOR;
           }
+
           return true;
         }
       },
@@ -91,6 +94,7 @@ module.exports = class extends Generator {
         if (authors.choices.indexOf(props.author) === -1) {
           authors.choices.push(props.author);
         }
+
         authors.last = props.author;
         this._globalConfig.set('authors', authors);
       }
@@ -134,6 +138,6 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.npmInstall();
+    this.yarnInstall();
   }
 };
