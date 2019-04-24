@@ -43,7 +43,7 @@ describe('generator-gulped:app', () => {
       assert.file(['app/static']);
     });
     it('create styles dir', () => {
-      assert.file(['app/styles/_variables.scss', 'app/styles/app.scss']);
+      assert.file(['app/styles/imports/_variables.scss', 'app/styles/app.scss']);
     });
     it('create views dir', () => {
       assert.file([
