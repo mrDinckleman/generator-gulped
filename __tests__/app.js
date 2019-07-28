@@ -36,14 +36,14 @@ describe('generator-gulped:app', () => {
     it('create images dir', () => {
       assert.file(['app/images']);
     });
-    it('create scripts dir', () => {
-      assert.file(['app/scripts/app.js']);
+    it('create js dir', () => {
+      assert.file(['app/js/app.js']);
+    });
+    it('create scss dir', () => {
+      assert.file(['app/scss/imports/_variables.scss', 'app/scss/app.scss']);
     });
     it('create static dir', () => {
       assert.file(['app/static']);
-    });
-    it('create styles dir', () => {
-      assert.file(['app/styles/imports/_variables.scss', 'app/styles/app.scss']);
     });
     it('create views dir', () => {
       assert.file([
@@ -57,12 +57,14 @@ describe('generator-gulped:app', () => {
     it('create root files', () => {
       assert.file([
         '.browserslistrc',
-        '.csscomb.json',
         '.editorconfig',
+        '.eslintignore',
+        '.eslintrc.js',
         '.gitattributes',
         '.gitignore',
         '.htmlcombrc',
-        'gulpfile.js',
+        'babel.config.js',
+        'gulpfile.babel.js',
         'LICENSE.md',
         'package.json',
         'README.md'
