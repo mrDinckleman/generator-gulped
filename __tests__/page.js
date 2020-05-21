@@ -11,7 +11,7 @@ describe('generator-gulped:page', () => {
     let dir;
 
     beforeAll(() => {
-      return helpers.run(app).inTmpDir(tmpDir => {
+      return helpers.run(app).inTmpDir((tmpDir) => {
         dir = tmpDir;
       });
     });
@@ -19,7 +19,7 @@ describe('generator-gulped:page', () => {
     it('create template and data file', () => {
       assert.file([
         path.join(dir, `app/views/${pageName}.ejs`),
-        path.join(dir, `app/views/${pageName}.json`)
+        path.join(dir, `app/views/${pageName}.json`),
       ]);
     });
   });
@@ -30,7 +30,7 @@ describe('generator-gulped:page', () => {
     beforeAll(() => {
       return helpers
         .run(app)
-        .inTmpDir(tmpDir => {
+        .inTmpDir((tmpDir) => {
           dir = tmpDir;
         })
         .withArguments([pageName]);
@@ -39,7 +39,7 @@ describe('generator-gulped:page', () => {
     it('create template and data file', () => {
       assert.file([
         path.join(dir, `app/views/${pageName}.ejs`),
-        path.join(dir, `app/views/${pageName}.json`)
+        path.join(dir, `app/views/${pageName}.json`),
       ]);
     });
   });
@@ -50,7 +50,7 @@ describe('generator-gulped:page', () => {
     beforeAll(() => {
       return helpers
         .run(app)
-        .inTmpDir(tmpDir => {
+        .inTmpDir((tmpDir) => {
           dir = tmpDir;
         })
         .withPrompts({ name: pageName });
@@ -59,7 +59,7 @@ describe('generator-gulped:page', () => {
     it('create template and data file', () => {
       assert.file([
         path.join(dir, `app/views/${pageName}.ejs`),
-        path.join(dir, `app/views/${pageName}.json`)
+        path.join(dir, `app/views/${pageName}.json`),
       ]);
     });
   });
