@@ -12,7 +12,7 @@ module.exports = class extends Generator {
     this.argument('name', {
       desc: 'Page name',
       required: false,
-      type: String
+      type: String,
     });
   }
 
@@ -23,13 +23,13 @@ module.exports = class extends Generator {
         name: 'name',
         message: 'Page name',
         validate: utils.required,
-        when: !this.options.name
-      }
+        when: !this.options.name,
+      },
     ];
 
-    return this.prompt(prompts).then(props => {
+    return this.prompt(prompts).then((props) => {
       this.props = {
-        name: props.name || this.options.name || 'page'
+        name: props.name || this.options.name || 'page',
       };
     });
   }
@@ -39,7 +39,7 @@ module.exports = class extends Generator {
 
     const dir = 'app/views/';
     const files = ['index.ejs', 'index.json'];
-    files.forEach(file => {
+    files.forEach((file) => {
       this.fs.copy(
         this.templatePath(dir + file),
         this.destinationPath(dir + this.props.name + file.substr(file.lastIndexOf('.')))

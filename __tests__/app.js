@@ -10,7 +10,7 @@ describe('generator-gulped:app', () => {
     let dir;
 
     beforeAll(() => {
-      return helpers.run(app).inTmpDir(tmpDir => {
+      return helpers.run(app).inTmpDir((tmpDir) => {
         dir = tmpDir;
       });
     });
@@ -27,7 +27,7 @@ describe('generator-gulped:app', () => {
     it('create scss dir', () => {
       assert.file([
         path.join(dir, 'app/scss/imports/_variables.scss'),
-        path.join(dir, 'app/scss/app.scss')
+        path.join(dir, 'app/scss/app.scss'),
       ]);
     });
     it('create static dir', () => {
@@ -39,7 +39,7 @@ describe('generator-gulped:app', () => {
         path.join(dir, 'app/views/partials/_footer.ejs'),
         path.join(dir, 'app/views/partials/_head.ejs'),
         path.join(dir, 'app/views/partials/_header.ejs'),
-        path.join(dir, 'app/views/global.json')
+        path.join(dir, 'app/views/global.json'),
       ]);
     });
     it('create root files', () => {
@@ -55,18 +55,18 @@ describe('generator-gulped:app', () => {
         path.join(dir, 'gulpfile.babel.js'),
         path.join(dir, 'LICENSE.md'),
         path.join(dir, 'package.json'),
-        path.join(dir, 'README.md')
+        path.join(dir, 'README.md'),
       ]);
     });
   });
   describe('using defaults with no authors', () => {
     it('set default values', () => {
-      return helpers.run(app).then(dir => {
+      return helpers.run(app).then((dir) => {
         assert.jsonFileContent(path.join(dir, 'package.json'), {
           name: path.basename(dir),
           version: '0.1.0',
           author: '',
-          homepage: ''
+          homepage: '',
         });
       });
     });
@@ -76,12 +76,12 @@ describe('generator-gulped:app', () => {
       return helpers
         .run(app)
         .withOptions({ yes: true })
-        .then(dir => {
+        .then((dir) => {
           assert.jsonFileContent(path.join(dir, 'package.json'), {
             name: path.basename(dir),
             version: '0.1.0',
             author: '',
-            homepage: ''
+            homepage: '',
           });
         });
     });
@@ -92,12 +92,12 @@ describe('generator-gulped:app', () => {
         .run(app)
         .withArguments([name])
         .withOptions({ yes: true })
-        .then(dir => {
+        .then((dir) => {
           assert.jsonFileContent(path.join(dir, 'package.json'), {
             name: name,
             version: '0.1.0',
             author: '',
-            homepage: ''
+            homepage: '',
           });
         });
     });
@@ -109,21 +109,21 @@ describe('generator-gulped:app', () => {
     it('set last author by default', () => {
       return helpers
         .run(app)
-        .on('ready', gen => {
+        .on('ready', (gen) => {
           gen._globalConfig.set('authors', mockAuthors);
         })
-        .then(dir => {
+        .then((dir) => {
           assert.jsonFileContent(path.join(dir, 'package.json'), { author });
         });
     });
     it('set last author with --yes flag', () => {
       return helpers
         .run(app)
-        .on('ready', gen => {
+        .on('ready', (gen) => {
           gen._globalConfig.set('authors', mockAuthors);
         })
         .withOptions({ yes: true })
-        .then(dir => {
+        .then((dir) => {
           assert.jsonFileContent(path.join(dir, 'package.json'), { author });
         });
     });
@@ -136,7 +136,7 @@ describe('generator-gulped:app', () => {
     beforeAll(() => {
       return helpers
         .run(app)
-        .inTmpDir(tmpDir => {
+        .inTmpDir((tmpDir) => {
           dir = tmpDir;
         })
         .withArguments([argName])
@@ -155,14 +155,14 @@ describe('generator-gulped:app', () => {
       name: 'project',
       version: '1.0.5',
       author: 'Author <email@gmail.com>',
-      homepage: 'http://project.org'
+      homepage: 'http://project.org',
     };
 
     it('set specified values', () => {
       return helpers
         .run(app)
         .withPrompts(prompts)
-        .then(dir => {
+        .then((dir) => {
           assert.jsonFileContent(path.join(dir, 'package.json'), prompts);
         });
     });

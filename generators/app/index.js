@@ -12,13 +12,13 @@ module.exports = class extends Generator {
     this.argument('name', {
       desc: 'Project name',
       required: false,
-      type: String
+      type: String,
     });
 
     this.option('yes', {
       desc: 'Use default parameters',
       alias: 'y',
-      type: Boolean
+      type: Boolean,
     });
   }
 
@@ -26,11 +26,11 @@ module.exports = class extends Generator {
     // Hacky method https://github.com/yeoman/generator/issues/917
     let authors = this._globalConfig.get('authors') || {
       choices: [],
-      last: ''
+      last: '',
     };
     const defaults = {
       name: this.appname,
-      version: '0.1.0'
+      version: '0.1.0',
     };
     const ADD_AUTHOR = 'Add new';
 
@@ -40,14 +40,14 @@ module.exports = class extends Generator {
         name: 'name',
         message: 'Project name',
         default: defaults.name,
-        when: !this.options.name && !this.options.yes
+        when: !this.options.name && !this.options.yes,
       },
       {
         type: 'input',
         name: 'version',
         message: 'Version',
         default: defaults.version,
-        when: !this.options.yes
+        when: !this.options.yes,
       },
       {
         type: 'list',
@@ -61,15 +61,15 @@ module.exports = class extends Generator {
           }
 
           return !this.options.yes;
-        }
+        },
       },
       {
         type: 'input',
         name: 'author',
-        message: answers => utils.newAuthorMessage(answers.author === ADD_AUTHOR),
+        message: (answers) => utils.newAuthorMessage(answers.author === ADD_AUTHOR),
         default: authors.last ? authors.last : undefined,
         validate: utils.required,
-        when: answers => {
+        when: (answers) => {
           if (authors.last) {
             if (this.options.yes) {
               return false;
@@ -79,17 +79,17 @@ module.exports = class extends Generator {
           }
 
           return true;
-        }
+        },
       },
       {
         type: 'input',
         name: 'homepage',
         message: 'Homepage',
-        when: !this.options.yes
-      }
+        when: !this.options.yes,
+      },
     ];
 
-    return this.prompt(prompts).then(props => {
+    return this.prompt(prompts).then((props) => {
       if (props.author) {
         if (authors.choices.indexOf(props.author) === -1) {
           authors.choices.push(props.author);
@@ -103,7 +103,7 @@ module.exports = class extends Generator {
         name: props.name || this.options.name || defaults.name,
         version: props.version || defaults.version,
         author: props.author || authors.last || '',
-        homepage: props.homepage || ''
+        homepage: props.homepage || '',
       };
     });
   }
@@ -115,7 +115,7 @@ module.exports = class extends Generator {
       this.templatePath('**/!(.npmignore|package.json)'),
       this.destinationPath('./'),
       {
-        globOptions: { dot: true }
+        globOptions: { dot: true },
       }
     );
     // NPM renames '.gitignore' file to '.npmignore' during installation,
@@ -133,7 +133,7 @@ module.exports = class extends Generator {
       author: this.props.author,
       devDependencies: templateJson.devDependencies,
       dependencies: templateJson.dependencies,
-      private: true
+      private: true,
     };
     this.fs.writeJSON(this.destinationPath('package.json'), packageJson);
   }
