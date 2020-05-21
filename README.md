@@ -1,6 +1,6 @@
 # generator-gulped [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/mrDinckleman/generator-gulped.svg)](https://greenkeeper.io/)
+
 
 > Yeoman generator for [Gulped](https://github.com/mrDinckleman/gulped) template
 
