@@ -6,103 +6,79 @@ const helpers = require('yeoman-test');
 const app = path.join(__dirname, '../generators/app');
 
 describe('generator-gulped:app', () => {
-  let storage;
-
-  beforeAll(() => {
-    return helpers.run(app).on('ready', gen => {
-      storage = (() => {
-        const config = gen._globalConfig;
-        const source = config.get('authors');
-
-        return {
-          get: () => config.get('authors'),
-          set: value => config.set('authors', value),
-          clear: () => config.delete('authors'),
-          restore: () => config.set('authors', source)
-        };
-      })();
-
-      storage.clear();
-    });
-  });
-  afterAll(() => storage.restore());
-
   describe('creating files', () => {
-    beforeAll(() => helpers.run(app));
+    let dir;
+
+    beforeAll(() => {
+      return helpers.run(app).inTmpDir(tmpDir => {
+        dir = tmpDir;
+      });
+    });
 
     it('create fonts dir', () => {
-      assert.file(['app/fonts']);
+      assert.file([path.join(dir, 'app/fonts')]);
     });
     it('create images dir', () => {
-      assert.file(['app/images']);
+      assert.file([path.join(dir, 'app/images')]);
     });
     it('create js dir', () => {
-      assert.file(['app/js/app.js']);
+      assert.file([path.join(dir, 'app/js/app.js')]);
     });
     it('create scss dir', () => {
-      assert.file(['app/scss/imports/_variables.scss', 'app/scss/app.scss']);
+      assert.file([
+        path.join(dir, 'app/scss/imports/_variables.scss'),
+        path.join(dir, 'app/scss/app.scss')
+      ]);
     });
     it('create static dir', () => {
-      assert.file(['app/static']);
+      assert.file([path.join(dir, 'app/static')]);
     });
     it('create views dir', () => {
       assert.file([
-        'app/views/partials/_foot.ejs',
-        'app/views/partials/_footer.ejs',
-        'app/views/partials/_head.ejs',
-        'app/views/partials/_header.ejs',
-        'app/views/global.json'
+        path.join(dir, 'app/views/partials/_foot.ejs'),
+        path.join(dir, 'app/views/partials/_footer.ejs'),
+        path.join(dir, 'app/views/partials/_head.ejs'),
+        path.join(dir, 'app/views/partials/_header.ejs'),
+        path.join(dir, 'app/views/global.json')
       ]);
     });
     it('create root files', () => {
       assert.file([
-        '.browserslistrc',
-        '.editorconfig',
-        '.eslintignore',
-        '.eslintrc.js',
-        '.gitattributes',
-        '.gitignore',
-        '.htmlcombrc',
-        'babel.config.js',
-        'gulpfile.babel.js',
-        'LICENSE.md',
-        'package.json',
-        'README.md'
+        path.join(dir, '.browserslistrc'),
+        path.join(dir, '.editorconfig'),
+        path.join(dir, '.eslintignore'),
+        path.join(dir, '.eslintrc.js'),
+        path.join(dir, '.gitattributes'),
+        path.join(dir, '.gitignore'),
+        path.join(dir, '.htmlcombrc'),
+        path.join(dir, 'babel.config.js'),
+        path.join(dir, 'gulpfile.babel.js'),
+        path.join(dir, 'LICENSE.md'),
+        path.join(dir, 'package.json'),
+        path.join(dir, 'README.md')
       ]);
     });
   });
   describe('using defaults with no authors', () => {
-    let name;
-
     it('set default values', () => {
-      return helpers
-        .run(app)
-        .inTmpDir(dir => {
-          name = path.basename(dir);
-        })
-        .then(() => {
-          assert.jsonFileContent('package.json', {
-            name: name,
-            version: '0.1.0',
-            author: '',
-            homepage: ''
-          });
+      return helpers.run(app).then(dir => {
+        assert.jsonFileContent(path.join(dir, 'package.json'), {
+          name: path.basename(dir),
+          version: '0.1.0',
+          author: '',
+          homepage: ''
         });
+      });
     });
   });
   describe('using --yes flag with no authors', () => {
-    let name;
-
     it('set default values', () => {
       return helpers
         .run(app)
-        .inTmpDir(dir => {
-          name = path.basename(dir);
-        })
         .withOptions({ yes: true })
-        .then(() => {
-          assert.jsonFileContent('package.json', {
-            name: name,
+        .then(dir => {
+          assert.jsonFileContent(path.join(dir, 'package.json'), {
+            name: path.basename(dir),
             version: '0.1.0',
             author: '',
             homepage: ''
@@ -116,8 +92,8 @@ describe('generator-gulped:app', () => {
         .run(app)
         .withArguments([name])
         .withOptions({ yes: true })
-        .then(() => {
-          assert.jsonFileContent('package.json', {
+        .then(dir => {
+          assert.jsonFileContent(path.join(dir, 'package.json'), {
             name: name,
             version: '0.1.0',
             author: '',
@@ -128,39 +104,50 @@ describe('generator-gulped:app', () => {
   });
   describe('using last author', () => {
     let author = 'Foo Bar';
+    const mockAuthors = { choices: [author, 'Baz Qux'], last: author };
 
-    beforeAll(() => storage.set({ choices: [author, 'Baz Qux'], last: author }));
-    afterAll(() => storage.clear());
     it('set last author by default', () => {
-      return helpers.run(app).then(() => {
-        assert.jsonFileContent('package.json', { author });
-      });
+      return helpers
+        .run(app)
+        .on('ready', gen => {
+          gen._globalConfig.set('authors', mockAuthors);
+        })
+        .then(dir => {
+          assert.jsonFileContent(path.join(dir, 'package.json'), { author });
+        });
     });
     it('set last author with --yes flag', () => {
       return helpers
         .run(app)
+        .on('ready', gen => {
+          gen._globalConfig.set('authors', mockAuthors);
+        })
         .withOptions({ yes: true })
-        .then(() => {
-          assert.jsonFileContent('package.json', { author });
+        .then(dir => {
+          assert.jsonFileContent(path.join(dir, 'package.json'), { author });
         });
     });
   });
   describe('using name argument', () => {
     let argName = 'argument';
     let promptName = 'prompt';
+    let dir;
 
     beforeAll(() => {
       return helpers
         .run(app)
+        .inTmpDir(tmpDir => {
+          dir = tmpDir;
+        })
         .withArguments([argName])
         .withPrompts({ name: promptName });
     });
 
     it('set name specified in argument', () => {
-      assert.jsonFileContent('package.json', { name: argName });
+      assert.jsonFileContent(path.join(dir, 'package.json'), { name: argName });
     });
     it('ignore name specified in prompt', () => {
-      assert.noJsonFileContent('package.json', { name: promptName });
+      assert.noJsonFileContent(path.join(dir, 'package.json'), { name: promptName });
     });
   });
   describe('using entered values', () => {
@@ -175,8 +162,8 @@ describe('generator-gulped:app', () => {
       return helpers
         .run(app)
         .withPrompts(prompts)
-        .then(() => {
-          assert.jsonFileContent('package.json', prompts);
+        .then(dir => {
+          assert.jsonFileContent(path.join(dir, 'package.json'), prompts);
         });
     });
   });
