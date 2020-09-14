@@ -151,11 +151,18 @@ describe('generator-gulped:app', () => {
     });
   });
   describe('using entered values', () => {
-    let prompts = {
+    let answers = {
       name: 'project',
       version: '1.0.5',
       author: 'Author <email@gmail.com>',
       homepage: 'http://project.org',
+    };
+    let prompts = {
+      ...answers,
+      ...{
+        author: 'Add new',
+        authorNew: answers.author,
+      },
     };
 
     it('set specified values', () => {
@@ -163,7 +170,7 @@ describe('generator-gulped:app', () => {
         .run(app)
         .withPrompts(prompts)
         .then((dir) => {
-          assert.jsonFileContent(path.join(dir, 'package.json'), prompts);
+          assert.jsonFileContent(path.join(dir, 'package.json'), answers);
         });
     });
   });

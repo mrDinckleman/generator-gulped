@@ -65,7 +65,7 @@ module.exports = class extends Generator {
       },
       {
         type: 'input',
-        name: 'author',
+        name: 'authorNew',
         message: (answers) => utils.newAuthorMessage(answers.author === ADD_AUTHOR),
         default: authors.last ? authors.last : undefined,
         validate: utils.required,
@@ -90,19 +90,21 @@ module.exports = class extends Generator {
     ];
 
     return this.prompt(prompts).then((props) => {
-      if (props.author) {
-        if (authors.choices.indexOf(props.author) === -1) {
-          authors.choices.push(props.author);
+      let author = props.authorNew || props.author;
+
+      if (author) {
+        if (authors.choices.indexOf(author) === -1) {
+          authors.choices.push(author);
         }
 
-        authors.last = props.author;
+        authors.last = author;
         this._globalConfig.set('authors', authors);
       }
 
       this.props = {
         name: props.name || this.options.name || defaults.name,
         version: props.version || defaults.version,
-        author: props.author || authors.last || '',
+        author: author || authors.last || '',
         homepage: props.homepage || '',
       };
     });
@@ -130,7 +132,7 @@ module.exports = class extends Generator {
       description: templateJson.description,
       scripts: templateJson.scripts,
       homepage: this.props.homepage,
-      author: this.props.author,
+      author: this.props.authorNew || this.props.author,
       devDependencies: templateJson.devDependencies,
       dependencies: templateJson.dependencies,
       private: true,
