@@ -16,22 +16,25 @@ describe('generator-gulped:app', () => {
     });
 
     it('create fonts dir', () => {
-      assert.file([path.join(dir, 'app/fonts')]);
+      assert.file([path.join(dir, 'app/assets/fonts')]);
     });
     it('create images dir', () => {
-      assert.file([path.join(dir, 'app/images')]);
+      assert.file([path.join(dir, 'app/assets/images')]);
     });
-    it('create js dir', () => {
-      assert.file([path.join(dir, 'app/js/app.js')]);
-    });
-    it('create scss dir', () => {
+    it('create entry dir', () => {
       assert.file([
-        path.join(dir, 'app/scss/imports/_variables.scss'),
-        path.join(dir, 'app/scss/app.scss'),
+        path.join(dir, 'app/assets/entry/app.js'),
+        path.join(dir, 'app/assets/entry/app.scss'),
       ]);
     });
-    it('create static dir', () => {
-      assert.file([path.join(dir, 'app/static')]);
+    it('create helpers dir', () => {
+      assert.file([
+        path.join(dir, 'app/assets/helpers/functions.scss'),
+        path.join(dir, 'app/assets/helpers/mixins.scss'),
+      ]);
+    });
+    it('create variables dir', () => {
+      assert.file([path.join(dir, 'app/assets/variables/colors.scss')]);
     });
     it('create views dir', () => {
       assert.file([
