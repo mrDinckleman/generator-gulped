@@ -21,7 +21,9 @@ yo gulped
 
 If you want to skip install dependencies, just run this command with `--skip-install` flag. Use flags `-y` or `--yes` for installing with default parameters.
 
-In project directory run `yo gulped:page` to create new view file with associated json data file.
+In project directory run:
+ * `yo gulped:page` or `yo gulped:page pageName` to create new view file with associated json data file
+ * `yo gulped:block` or `yo gulped:block blockName` to create new block styles
 
 ## Getting To Know Yeoman
 
