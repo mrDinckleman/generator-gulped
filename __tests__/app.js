@@ -53,7 +53,6 @@ describe('generator-gulped:app', () => {
         path.join(dir, '.eslintrc.js'),
         path.join(dir, '.gitattributes'),
         path.join(dir, '.gitignore'),
-        path.join(dir, '.htmlcombrc'),
         path.join(dir, 'babel.config.js'),
         path.join(dir, 'gulpfile.babel.js'),
         path.join(dir, 'LICENSE.md'),

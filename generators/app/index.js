@@ -113,16 +113,12 @@ module.exports = class extends Generator {
   writing() {
     this.sourceRoot(path.join(path.dirname(this.resolved), '../../node_modules/gulped/'));
 
-    this.fs.copy(
-      this.templatePath('**/!(.npmignore|package.json)'),
-      this.destinationPath('./'),
-      {
-        globOptions: { dot: true },
-      }
-    );
+    this.fs.copy(this.templatePath('**/!(package.json)'), this.destinationPath('./'), {
+      globOptions: { dot: true },
+    });
     // NPM renames '.gitignore' file to '.npmignore' during installation,
     // so we need to rename it back
-    this.fs.copy(this.templatePath('.npmignore'), this.destinationPath('.gitignore'));
+    this.fs.move(this.destinationPath('.npmignore'), this.destinationPath('.gitignore'));
 
     // Save project information entered by user
     let templateJson = this.fs.readJSON(this.templatePath('package.json'));
