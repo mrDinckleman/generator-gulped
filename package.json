@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "gulped": "github:mrDinckleman/gulped#5ce2a0d",
-    "yeoman-generator": "^4.13.0"
+    "yeoman-generator": "^5.0.0"
   },
   "jest": {
     "testEnvironment": "node"
