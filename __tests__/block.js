@@ -20,7 +20,7 @@ describe('generator-gulped:block', () => {
       assert.file([
         path.join(dir, `app/assets/blocks/${blockName}/index.scss`),
         path.join(dir, `app/assets/blocks/${blockName}/${blockName}.scss`),
-        path.join(dir, `app/assets/blocks/${blockName}/variables.scss`),
+        path.join(dir, `app/assets/blocks/${blockName}/variables-${blockName}.scss`),
       ]);
     });
   });
@@ -41,7 +41,7 @@ describe('generator-gulped:block', () => {
       assert.file([
         path.join(dir, `app/assets/blocks/${blockName}/index.scss`),
         path.join(dir, `app/assets/blocks/${blockName}/${blockName}.scss`),
-        path.join(dir, `app/assets/blocks/${blockName}/variables.scss`),
+        path.join(dir, `app/assets/blocks/${blockName}/variables-${blockName}.scss`),
       ]);
     });
   });
@@ -62,7 +62,7 @@ describe('generator-gulped:block', () => {
       assert.file([
         path.join(dir, `app/assets/blocks/${blockName}/index.scss`),
         path.join(dir, `app/assets/blocks/${blockName}/${blockName}.scss`),
-        path.join(dir, `app/assets/blocks/${blockName}/variables.scss`),
+        path.join(dir, `app/assets/blocks/${blockName}/variables-${blockName}.scss`),
       ]);
     });
   });

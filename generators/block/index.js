@@ -38,7 +38,7 @@ module.exports = class extends Generator {
     this.sourceRoot(path.join(path.dirname(this.resolved), '../../node_modules/gulped/'));
 
     const dir = 'app/assets/blocks/page/';
-    const files = ['index.scss', 'page.scss', 'variables.scss'];
+    const files = ['index.scss', 'page.scss', 'variables-page.scss'];
     files.forEach((file) => {
       const path = dir + file;
       this.fs.copy(
